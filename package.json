@@ -1,0 +1,23 @@
+{
+  "name": "contemplators-bot",
+  "version": "1.0.0",
+  "description": "Bot de Farcaster para Contemplators: casts automaticos, respuesta a menciones y asignacion de contemplators via el atlas de la contemplacion.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "webhook": "node src/webhook.js",
+    "scheduler": "node src/scheduler.js",
+    "cast:test": "node src/scripts/testCast.js",
+    "assign:test": "node src/scripts/testAssign.js"
+  },
+  "dependencies": {
+    "@neynar/nodejs-sdk": "^2.19.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "node-cron": "^3.0.3"
+  },
+  "license": "MIT"
+}
