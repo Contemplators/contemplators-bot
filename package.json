@@ -4,7 +4,7 @@
   "description": "Bot de Farcaster para Contemplators: casts automaticos, respuesta a menciones y asignacion de contemplators via el atlas de la contemplacion.",
   "type": "module",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
     "start": "node src/index.js",
