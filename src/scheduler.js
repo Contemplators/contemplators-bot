@@ -1,7 +1,7 @@
 // -----------------------------------------------------------
 // scheduler.js
 // Programa los casts automaticos con node-cron.
-// Se puede ejecutar suelto (npm run scheduler) o desde index.js.
+// 2 casts/dia (p.ej. 10:00 y 19:00): manana y tarde son piezas distintas.
 // -----------------------------------------------------------
 import cron from "node-cron";
 import { config } from "./config.js";
@@ -9,8 +9,11 @@ import { publishCast } from "./neynar.js";
 import { pickDailyCast, dayOfYear } from "./casts.js";
 
 export async function postScheduledCast() {
-  const { text, embeds } = pickDailyCast(dayOfYear());
-  const idem = `daily-${new Date().toISOString().slice(0, 10)}`; // 1 por dia como maximo
+  const now = new Date();
+  const slot = now.getUTCHours() < 14 ? 0 : 1;
+  const index = dayOfYear(now) * 2 + slot;
+  const { text, embeds } = pickDailyCast(index);
+  const idem = `cast-${now.toISOString().slice(0, 10)}-${slot}`;
   try {
     await publishCast({ text, embeds, idem });
   } catch (err) {
@@ -31,7 +34,6 @@ export function startScheduler() {
   );
 }
 
-// Permite ejecutar este archivo directamente: node src/scheduler.js
 if (import.meta.url === `file://${process.argv[1]}`) {
   startScheduler();
 }
