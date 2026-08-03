@@ -1,21 +1,16 @@
 // -----------------------------------------------------------
-// webhook.js
-// Servidor HTTP que recibe eventos de Neynar (cast.created con mencion al bot)
-// y responde asignando un contemplator.
-//
-// Seguridad: verifica la firma HMAC-SHA512 del header X-Neynar-Signature
-// usando NEYNAR_WEBHOOK_SECRET.
+// webhook.js — respuestas a menciones (@) y empujoncito a respuestas sin @
 // -----------------------------------------------------------
 import express from "express";
 import crypto from "node:crypto";
 import { config } from "./config.js";
 import { publishCast } from "./neynar.js";
 import { buildReply } from "./replies.js";
+import { detectLang } from "./contemplators.js";
 import { alreadySeen, markSeen } from "./store.js";
 
 const app = express();
 
-// Necesitamos el cuerpo CRUDO para verificar la firma, ademas del JSON parseado.
 app.use(
   express.json({
     verify: (req, _res, buf) => {
@@ -24,10 +19,8 @@ app.use(
   })
 );
 
-/** Verifica la firma del webhook de Neynar (HMAC-SHA512). */
 function isValidSignature(req) {
   if (!config.webhookSecret) {
-    // Sin secreto configurado no podemos verificar; avisamos y dejamos pasar.
     console.warn("⚠️  NEYNAR_WEBHOOK_SECRET no definido: firma NO verificada.");
     return true;
   }
@@ -37,17 +30,43 @@ function isValidSignature(req) {
     .createHmac("sha512", config.webhookSecret)
     .update(req.rawBody)
     .digest("hex");
-  // Comparacion en tiempo constante.
   const a = Buffer.from(sig);
   const b = Buffer.from(hmac);
   return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+
+/** ¿El cast menciona EXPLICITAMENTE al bot (@username en el texto o fid en mentions)? */
+function mentionsBot(cast) {
+  const profs = cast.mentioned_profiles || cast.mentionedProfiles || [];
+  const fids = profs.map((p) => Number(p?.fid)).filter(Boolean);
+  if (config.botFid && fids.includes(config.botFid)) return true;
+  const text = (cast.text || "").toLowerCase();
+  const handle = (config.botUsername || "").toLowerCase();
+  return handle ? text.includes(`@${handle}`) : false;
+}
+
+/** Empujoncito bilingue para respuestas SIN @. */
+function buildNudge(rawText) {
+  const lang = detectLang(rawText);
+  const L = config.links[lang] || config.links.es;
+  if (lang === "en") {
+    return (
+      `Mention me with @${config.botUsername} and your 5 answers ` +
+      `(obsession, blind spot, gesture, food, crack) and I'll tell you which Contemplator you are 👁️\n\n` +
+      `Or go to the atlas: ${L.atlas}`
+    );
+  }
+  return (
+    `Mencióname con @${config.botUsername} y tus 5 respuestas ` +
+    `(obsesión, punto ciego, gesto, alimento, grieta) y te digo qué Contemplator eres 👁️\n\n` +
+    `O ve al atlas: ${L.atlas}`
+  );
 }
 
 app.get("/", (_req, res) => res.send("Contemplators bot: webhook activo 👁️"));
 app.get("/health", (_req, res) => res.json({ ok: true }));
 
 app.post("/webhook", async (req, res) => {
-  // Respondemos 200 rapido; procesamos despues para no forzar reintentos.
   if (!isValidSignature(req)) {
     console.warn("❌ Firma invalida. Peticion rechazada.");
     return res.status(401).send("invalid signature");
@@ -61,24 +80,34 @@ app.post("/webhook", async (req, res) => {
     const cast = body.data;
     if (!cast) return;
 
-    // Evitar bucles: ignorar nuestros propios casts.
     if (Number(cast.author?.fid) === config.botFid) return;
 
-    // Evitar responder dos veces al mismo cast.
     if (alreadySeen(cast.hash)) return;
     markSeen(cast.hash);
 
     const text = cast.text ?? "";
-    console.log(`📥 Mencion de @${cast.author?.username ?? "?"}: "${text}"`);
+    const author = cast.author?.username ?? "?";
+    const parentAuthorFid = Number(cast.author?.fid) || undefined;
 
-    const reply = buildReply(text);
-    await publishCast({
-      text: reply.text,
-      embeds: reply.embeds,
-      parent: cast.hash,
-      parentAuthorFid: Number(cast.author?.fid) || undefined,
-      idem: `reply-${cast.hash}`,
-    });
+    if (mentionsBot(cast)) {
+      console.log(`📥 Mencion de @${author}: "${text}"`);
+      const reply = buildReply(text);
+      await publishCast({
+        text: reply.text,
+        embeds: reply.embeds,
+        parent: cast.hash,
+        parentAuthorFid,
+        idem: `reply-${cast.hash}`,
+      });
+    } else {
+      console.log(`💬 Respuesta sin @ de @${author}: envio empujoncito`);
+      await publishCast({
+        text: buildNudge(text),
+        parent: cast.hash,
+        parentAuthorFid,
+        idem: `nudge-${cast.hash}`,
+      });
+    }
   } catch (err) {
     console.error("❌ Error procesando webhook:", err?.message ?? err);
   }
@@ -93,7 +122,6 @@ export function startWebhookServer() {
   });
 }
 
-// Ejecutable directo: node src/webhook.js
 if (import.meta.url === `file://${process.argv[1]}`) {
   startWebhookServer();
 }
