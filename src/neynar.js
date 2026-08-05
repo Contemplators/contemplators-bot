@@ -8,20 +8,22 @@ import { config, getClient } from "./config.js";
 /**
  * Publica un cast nuevo (o una respuesta si se pasa `parent`).
  * @param {object} opts
- * @param {string} opts.text        Texto del cast (max ~320 bytes en Farcaster).
- * @param {string} [opts.parent]    Hash del cast padre (para responder).
+ * @param {string} opts.text Texto del cast (max ~320 bytes en Farcaster).
+ * @param {string} [opts.parent] Hash del cast padre (para responder).
  * @param {number} [opts.parentAuthorFid] FID del autor del cast padre.
  * @param {Array<{url:string}>} [opts.embeds] Embeds (imagenes, enlaces, frames).
- * @param {string} [opts.idem]      Clave de idempotencia para evitar duplicados.
+ * @param {string} [opts.idem] Clave de idempotencia para evitar duplicados.
+ * @param {string} [opts.channelId] Slug del canal donde publicar (p.ej. "art").
  */
-export async function publishCast({ text, parent, parentAuthorFid, embeds, idem }) {
+export async function publishCast({ text, parent, parentAuthorFid, embeds, idem, channelId }) {
   const safeText = truncateCast(text);
 
   if (config.dryRun) {
     console.log("🧪 [DRY_RUN] Cast NO publicado. Contenido:");
-    console.log("   texto:", safeText);
-    if (parent) console.log("   respuesta a:", parent);
-    if (embeds?.length) console.log("   embeds:", JSON.stringify(embeds));
+    console.log("  texto:", safeText);
+    if (parent) console.log("  respuesta a:", parent);
+    if (channelId) console.log("  canal:", channelId);
+    if (embeds?.length) console.log("  embeds:", JSON.stringify(embeds));
     return { dryRun: true, cast: { text: safeText } };
   }
 
@@ -40,9 +42,14 @@ export async function publishCast({ text, parent, parentAuthorFid, embeds, idem 
   if (parentAuthorFid) payload.parentAuthorFid = parentAuthorFid;
   if (embeds?.length) payload.embeds = embeds;
   if (idem) payload.idem = idem;
+  if (channelId) payload.channelId = channelId;
 
   const response = await client.publishCast(payload);
-  console.log("✅ Cast publicado:", response?.cast?.hash ?? "(sin hash)");
+  console.log(
+    "✅ Cast publicado:",
+    response?.cast?.hash ?? "(sin hash)",
+    channelId ? `(canal: ${channelId})` : ""
+  );
   return response;
 }
 

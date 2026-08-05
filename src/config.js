@@ -29,6 +29,13 @@ export const config = {
   port: Number(optional("PORT", "3000")),
   timeZone: optional("TIME_ZONE", "Europe/Madrid"),
   castCron: optional("CAST_CRON", "0 10 * * *"),
+  // Canales de Farcaster donde se publican los casts automaticos.
+  // Slugs separados por comas; rotan por indice (un canal distinto por cast).
+  // Cadena vacia => se publica sin canal (al timeline del perfil).
+  castChannels: optional("CAST_CHANNELS", "art,artfrens,contemporary-art,web3artists")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean),
   // Enlaces por idioma. Estructura de la web: ES en la raiz, EN en /en/.
   // Secciones actuales: home, atlas, about, collections (/contemplators).
   // (Ya NO existe "world" ni pagina de "mint".)
