@@ -24,79 +24,81 @@ const BY_KEY = new Map(DATA.map((c) => [c.key, c]));
 
 // -----------------------------------------------------------
 // Las 5 variables (ES + EN). Los labels ES coinciden EXACTAMENTE con el sheet.
+// v2 (sept 2026): Conversación · Exposición · Vigilancia · Gesto · Tentación.
 // -----------------------------------------------------------
 export const VARIABLES = [
   {
-    key: "obsesion",
-    label: "Obsesión",
-    labelEn: "Obsession",
-    question: "¿A qué vas?",
-    questionEn: "What are you going for?",
+    key: "conversacion",
+    label: "Conversación",
+    labelEn: "Conversation",
+    question: "¿Cómo contestas?",
+    questionEn: "How do you reply?",
     options: [
-      { value: "la_raiz", label: "La raíz", labelEn: "The root", aliases: ["la raiz", "raiz", "the root", "root"] },
-      { value: "el_loop", label: "El loop", labelEn: "The loop", aliases: ["el loop", "loop", "the loop", "bucle"] },
-      { value: "el_glitch", label: "El glitch", labelEn: "The glitch", aliases: ["el glitch", "glitch", "the glitch"] },
-      { value: "la_senal", label: "La señal", labelEn: "The signal", aliases: ["la senal", "senal", "the signal", "signal"] },
-      { value: "la_cripta", label: "La cripta", labelEn: "The crypt", aliases: ["la cripta", "cripta", "the crypt", "crypt"] },
+      { value: "al_segundo", label: "Al segundo", labelEn: "Straight away", aliases: ["al segundo", "al instante", "al momento", "straight away", "right away", "instantly"] },
+      { value: "en_visto", label: "En visto", labelEn: "Left on read", aliases: ["dejar en visto", "en visto", "visto", "left on read", "on read"] },
+      { value: "audio_3min", label: "Audio de 3 minutos", labelEn: "Three-minute voice note", aliases: ["audio de 3 minutos", "nota de voz", "voice note", "voice notes", "audios", "audio"] },
+      { value: "escribe_borra", label: "Escribe y borra", labelEn: "Types and deletes", aliases: ["escribe y borra", "escribo y borro", "types and deletes", "escribiendo", "typing"] },
+      { value: "sticker", label: "Con un sticker", labelEn: "With a sticker", aliases: ["con un sticker", "stickers", "sticker", "gif"] },
     ],
   },
   {
-    key: "punto_ciego",
-    label: "Punto ciego",
-    labelEn: "Blind spot",
-    question: "¿Qué no pillas?",
-    questionEn: "What don't you get?",
+    key: "exposicion",
+    label: "Exposición",
+    labelEn: "Exposure",
+    question: "¿Qué enseñas de ti?",
+    questionEn: "What do you show of yourself?",
     options: [
-      { value: "el_que_reparte", label: "El que reparte", labelEn: "The dealer", aliases: ["el que reparte", "reparte", "the dealer", "dealer"] },
-      { value: "su_reflejo", label: "Su reflejo", labelEn: "The reflection", aliases: ["su reflejo", "reflejo", "the reflection", "reflection"] },
-      { value: "la_hora", label: "La hora", labelEn: "The time", aliases: ["la hora", "the time"] },
-      { value: "la_fuente", label: "La fuente", labelEn: "The source", aliases: ["la fuente", "fuente", "the source", "source"] },
-      { value: "el_de_al_lado", label: "El de al lado", labelEn: "The one next to you", aliases: ["el de al lado", "de al lado", "al lado", "the one next to you", "next to you"] },
+      { value: "todo", label: "Todo", labelEn: "Everything", aliases: ["lo publico todo", "publico todo", "post everything", "publish everything"] },
+      { value: "stories_24h", label: "Stories de 24 horas", labelEn: "24-hour stories", aliases: ["stories de 24 horas", "24 hour stories", "solo stories", "24 horas", "stories", "story"] },
+      { value: "cuenta_privada", label: "Cuenta privada", labelEn: "Private account", aliases: ["cuenta privada", "private account", "privada", "private"] },
+      { value: "solo_mira", label: "Nada, solo mira", labelEn: "Nothing, just watches", aliases: ["nada solo mira", "nada solo miro", "solo miro", "no publico nada", "no publico", "nothing just watch", "just watch", "lurker"] },
+      { value: "anonimo", label: "Anónimo, siempre", labelEn: "Always unseen", aliases: ["anonimo siempre", "nunca salgo en mis fotos", "always unseen", "anonimo", "anonima", "anonymous"] },
+    ],
+  },
+  {
+    key: "vigilancia",
+    label: "Vigilancia",
+    labelEn: "Watching",
+    question: "¿A quién miras?",
+    questionEn: "Who do you watch?",
+    options: [
+      { value: "al_ex", label: "Al ex", labelEn: "The ex", aliases: ["al ex", "mi ex", "el ex", "the ex", "my ex"] },
+      { value: "desconocidos", label: "A desconocidos", labelEn: "Strangers", aliases: ["a desconocidos", "desconocidos", "desconocido", "strangers", "stranger"] },
+      { value: "amigos", label: "A amigos", labelEn: "Friends", aliases: ["a amigos", "mis amigos", "amigos", "friends"] },
+      { value: "si_mismo", label: "A sí mismo", labelEn: "Themselves", aliases: ["a si mismo", "a mi mismo", "me miro a mi", "myself", "themselves"] },
+      { value: "lo_que_le_echen", label: "Lo que le echen", labelEn: "Whatever comes up", aliases: ["lo que le echen", "lo que me echen", "lo que salga", "whatever comes up", "autoplay"] },
     ],
   },
   {
     key: "gesto",
     label: "Gesto",
     labelEn: "Gesture",
-    question: "¿Qué le haces a la pantalla?",
-    questionEn: "What are you doing to the screen?",
+    question: "¿Qué haces con lo que te gusta?",
+    questionEn: "What do you do with what you like?",
     options: [
-      { value: "scroll", label: "Scroll", labelEn: "Scroll", aliases: ["scroll", "scrollear", "scrolling"] },
-      { value: "zoom", label: "Zoom", labelEn: "Zoom", aliases: ["zoom", "zooming"] },
-      { value: "pausa", label: "Pausa", labelEn: "Pause", aliases: ["pausa", "pausar", "pause"] },
-      { value: "remix", label: "Remix", labelEn: "Remix", aliases: ["remix", "remezcla"] },
-      { value: "save", label: "Save", labelEn: "Save", aliases: ["save", "guardar", "saving"] },
+      { value: "like_y_sigue", label: "Like y sigue", labelEn: "Likes and scrolls on", aliases: ["like y sigue", "doy like", "likes and scrolls on", "like", "likes"] },
+      { value: "guarda", label: "Lo guarda y no vuelve", labelEn: "Saves it, never returns", aliases: ["lo guardo y no vuelvo", "lo guardo", "guardados", "guardar", "saves it", "saved", "save"] },
+      { value: "captura", label: "Captura", labelEn: "Screenshots it", aliases: ["captura de pantalla", "pantallazo", "pantallazos", "screenshots", "screenshot", "capturas", "captura"] },
+      { value: "a_una_persona", label: "Se lo manda a una persona", labelEn: "Sends it to one person", aliases: ["se lo mando a una persona", "a una persona", "al mismo chat", "se lo mando", "sends it to one person", "to one person"] },
+      { value: "comenta", label: "Lo comenta", labelEn: "Comments on it", aliases: ["lo comento", "comentarios", "comentario", "comentar", "comments on it", "comment"] },
     ],
   },
   {
-    key: "alimento",
-    label: "Alimento",
-    labelEn: "Food",
-    question: "¿De qué comes?",
-    questionEn: "What do you eat?",
+    key: "tentacion",
+    label: "Tentación",
+    labelEn: "Temptation",
+    question: "¿Qué abrirías en su móvil?",
+    questionEn: "What would you open on their phone?",
     options: [
-      { value: "luz", label: "Luz", labelEn: "Light", aliases: ["luz", "light"] },
-      { value: "ruido", label: "Ruido", labelEn: "Noise", aliases: ["ruido", "noise"] },
-      { value: "data", label: "Data", labelEn: "Data", aliases: ["data", "datos"] },
-      { value: "silencio", label: "Silencio", labelEn: "Silence", aliases: ["silencio", "silence"] },
-      { value: "carne_ajena", label: "Carne ajena", labelEn: "Someone else's flesh", aliases: ["carne ajena", "carne", "someone elses flesh", "someone else's flesh", "flesh"] },
-    ],
-  },
-  {
-    key: "grieta",
-    label: "Grieta",
-    labelEn: "Crack",
-    question: "¿Por dónde te rompes?",
-    questionEn: "Where do you break?",
-    options: [
-      { value: "postureo", label: "Postureo", labelEn: "Posturing", aliases: ["postureo", "postureos", "posturing", "posing"] },
-      { value: "ansia", label: "Ansia", labelEn: "Craving", aliases: ["ansia", "ansias", "craving", "crave"] },
-      { value: "envidia", label: "Envidia", labelEn: "Envy", aliases: ["envidia", "envy"] },
-      { value: "rayada", label: "Rayada", labelEn: "Overthinking", aliases: ["rayada", "rayado", "rayarse", "overthinking", "overthink", "spiraling"] },
-      { value: "enganche", label: "Enganche", labelEn: "Hooked", aliases: ["enganche", "enganchado", "enganchada", "hooked", "addiction", "addicted"] },
+      { value: "whatsapp", label: "WhatsApp", labelEn: "WhatsApp", aliases: ["whatsapp", "wasap", "wsp"] },
+      { value: "instagram", label: "Instagram", labelEn: "Instagram", aliases: ["instagram", "insta", "ig"] },
+      { value: "tiktok", label: "TikTok", labelEn: "TikTok", aliases: ["tiktok", "tik tok"] },
+      { value: "sus_apps", label: "Sus apps", labelEn: "Their apps", aliases: ["sus apps", "las apps", "their apps", "apps"] },
+      { value: "ninguna", label: "Ninguna", labelEn: "None", aliases: ["no abriria nada", "no abro nada", "ninguna", "ninguno", "none"] },
     ],
   },
 ];
+
 const VAR_KEYS = VARIABLES.map((v) => v.key); // orden = orden de la clave
 
 // Ediciones -> etiqueta visible (ES/EN).
@@ -185,7 +187,7 @@ export function parseSelections(rawText) {
 
 /**
  * Asigna un contemplator a partir de las selecciones (slugs) del usuario.
- * @param {object} selections  {obsesion:'la_cripta', ...} (parcial o completo)
+ * @param {object} selections  {conversacion:'en_visto', ...} (parcial o completo)
  * @param {string} rawText     texto original (para desempate determinista)
  * @returns el registro del contemplator + {matchType, requested}
  */

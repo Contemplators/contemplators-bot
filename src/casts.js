@@ -24,8 +24,8 @@ export const CAST_TEMPLATES = [
   () => ({ text: `"We see what we want to see. We are not aware of what we do not want to see."\n\nThe blind spot. The neutral angle.\n\n${en.about}` }),
 
   // Atlas
-  () => ({ text: `¿A qué vas? ¿Qué no pillas? ¿Qué le haces a la pantalla? ¿De qué comes? ¿Por dónde te rompes?\n\n5 preguntas. 1 Contemplator 👁️\n${es.atlas}` }),
-  () => ({ text: `What are you going for? What don't you get? What do you do to the screen? What do you eat? Where do you break?\n\n5 questions. 1 Contemplator 👁️\n${en.atlas}` }),
+  () => ({ text: `¿Cómo contestas? ¿Qué enseñas de ti? ¿A quién miras? ¿Qué haces con lo que te gusta? ¿Qué abrirías en su móvil?\n\n5 preguntas. 1 Contemplator 👁️\n${es.atlas}` }),
+  () => ({ text: `How do you reply? What do you show of yourself? Who do you watch? What do you do with what you like? What would you open on their phone?\n\n5 questions. 1 Contemplator 👁️\n${en.atlas}` }),
 
   // "Nadie ve el cuadro entero"
   () => ({ text: `Ninguno ve el cuadro entero. Ninguno ve lo mismo que otro.\n\nTú ves lo que el otro no ve. Un Contemplator ve lo que tú no ves.\n\n${es.about}` }),
@@ -40,8 +40,8 @@ export const CAST_TEMPLATES = [
   () => ({ text: `Two editions to look at the same thing differently: the Original and the Chlorophyllics 🌱\n\nExplore the collection:\n${en.collections}` }),
 
   // Llamada al bot
-  () => ({ text: `Mencióname con tus 5 respuestas (obsesión, punto ciego, gesto, alimento, grieta) y te digo qué Contemplator eres.\n\nO ve al atlas: ${es.atlas}` }),
-  () => ({ text: `Mention me with your 5 answers (obsession, blind spot, gesture, food, crack) and I'll tell you which Contemplator you are.\n\nOr go to the atlas: ${en.atlas}` }),
+  () => ({ text: `Mencióname con tus 5 respuestas (conversación, exposición, vigilancia, gesto, tentación) y te digo qué Contemplator eres.\n\nO ve al atlas: ${es.atlas}` }),
+  () => ({ text: `Mention me with your 5 answers (conversation, exposure, watching, gesture, temptation) and I'll tell you which Contemplator you are.\n\nOr go to the atlas: ${en.atlas}` }),
 ];
 
 /**

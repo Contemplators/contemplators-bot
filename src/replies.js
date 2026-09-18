@@ -38,14 +38,14 @@ export function buildReply(mentionText) {
       return {
         text:
           `Tu forma de mirar es Contemplator ${id} · ${c.name} · ${edLabel} 👁️\n\n` +
-          `Afínalo respondiendo a las 5 (obsesión, punto ciego, gesto, alimento, grieta) o entra al atlas:\n${L.atlas}`,
+          `Afínalo respondiendo a las 5 (conversación, exposición, vigilancia, gesto, tentación) o entra al atlas:\n${L.atlas}`,
         embeds,
       };
     }
     return {
       text:
         `Your way of looking is Contemplator ${id} · ${c.name} · ${edLabel} 👁️\n\n` +
-        `Refine it by answering the 5 (obsession, blind spot, gesture, food, crack) or open the atlas:\n${L.atlas}`,
+        `Refine it by answering the 5 (conversation, exposure, watching, gesture, temptation) or open the atlas:\n${L.atlas}`,
       embeds,
     };
   }
